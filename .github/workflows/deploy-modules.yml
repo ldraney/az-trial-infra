@@ -1,0 +1,37 @@
+name: Deploy Azure Modules
+
+on:
+  workflow_dispatch:
+    inputs:
+      resource_group_name:
+        description: 'The name of the resource group to deploy to'
+        required: true
+      storage_account_name:
+        description: 'The name of the storage account to create'
+        required: true
+      location:
+        description: 'The Azure location for the storage account'
+        required: false
+        default: 'eastus'
+
+jobs:
+  deploy-modules:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Deploy Storage Account
+      run: |
+        az deployment group create \
+          --resource-group ${{ github.event.inputs.resource_group_name }} \
+          --template-file modules/storage-account/main.bicep \
+          --parameters storageAccountName=${{ github.event.inputs.storage_account_name }} \
+           location=${{ github.event.inputs.location }}
+
