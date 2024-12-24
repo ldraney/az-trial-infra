@@ -1,0 +1,30 @@
+name: Delete Storage Account
+
+on:
+  workflow_dispatch:
+    inputs:
+      resource_group_name:
+        description: 'Resource group'
+        required: true
+      storage_account_name:
+        description: 'Name of the storage account'
+        required: true
+
+jobs:
+  delete-modules:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Delete Storage Account
+        run: |
+          az storage account delete \
+            --name ${{ github.event.inputs.storage_account_name }} \
+            --resource-group ${{ github.event.inputs.resource_group_name }} \
+            --yes
