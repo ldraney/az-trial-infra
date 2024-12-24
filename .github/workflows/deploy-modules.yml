@@ -6,8 +6,8 @@ on:
       resource_group_name:
         description: 'The name of the resource group to deploy to'
         required: true
-      storage_account_name:
-        description: 'The name of the storage account to create'
+      base_name:
+        description: 'Base name for the storage account (will have a unique suffix)'
         required: true
       location:
         description: 'The Azure location for the storage account'
@@ -32,6 +32,6 @@ jobs:
         az deployment group create \
           --resource-group ${{ github.event.inputs.resource_group_name }} \
           --template-file modules/storage-account/main.bicep \
-          --parameters storageAccountName=${{ github.event.inputs.storage_account_name }} \
-           location=${{ github.event.inputs.location }}
+          --parameters baseName=${{ github.event.inputs.base_name }} \
+                       location=${{ github.event.inputs.location }}
 
