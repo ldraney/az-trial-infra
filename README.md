@@ -2,6 +2,12 @@
 
 This repository contains Azure Infrastructure as Code (IaC) modules and GitHub Actions workflows to manage Azure resources efficiently. The initial setup includes workflows for creating and managing resource groups, deploying modules, and deleting resources, with a sample module for deploying a storage account.
 
+## Using this repo
+
+There are two ways to deploy resources:
+1. Deploy by configuring yoru own environment file in environments/, and then deploy it to the appropriate workflow
+2. Create a resource group from the Actions tab, and then deploy module(s) to your environment
+
 ## Repository Structure
 
 ```
@@ -9,7 +15,8 @@ infra-repo/
 ├── .github/
 │   ├── workflows/
 │   │   ├── create-resource-group.yml       # Creates a new resource group
-│   │   ├── deploy-modules.yml             # Deploys modules to a resource group
+│   │   ├── deploy-modules.yml             # Deploys modules to a resource group (rg)
+│   │   ├── deploy-env.yml                 # Deploy a complete environment configuration to a env-named rg (dev, stag, prod, etc.)
 │   │   ├── delete-resource-group.yml      # Deletes a resource group
 │   │   ├── delete-modules.yml             # Deletes specific resources from a group
 ├── modules/
@@ -71,6 +78,8 @@ A sample Bicep module to deploy an Azure Storage Account.
    - Go to `Settings > Secrets > Actions > New Repository Secret`.
    - Add a secret named `AZURE_CREDENTIALS` with the JSON output of `az ad sp create-for-rbac`.
 
+For more instructions on setting up Azure from scratch, go to [ldraney/az-trial-docs](https://github.com/ldraney/az-trial-docs/tree/master)
+
 ## Usage
 
 1. Clone the repository:
@@ -96,6 +105,3 @@ A sample Bicep module to deploy an Azure Storage Account.
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
-```
-
-Let me know if there’s anything else you’d like to add or modify!
