@@ -26,6 +26,11 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v3
 
+    - name: Debug Directory Structure
+      run: |
+        echo "Listing project directory structure for debugging:"
+        ls -R
+
     - name: Login to Azure
       uses: azure/login@v1
       with:
@@ -33,6 +38,7 @@ jobs:
 
     - name: Deploy Environment Template
       run: |
+        echo "Deploying Bicep template for ${{ github.event.inputs.environment }} environment..."
         az deployment group create \
           --resource-group ${{ github.event.inputs.resource_group_name }} \
           --template-file env/${{ github.event.inputs.environment }}/main.bicep \
