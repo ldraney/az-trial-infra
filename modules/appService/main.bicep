@@ -7,16 +7,15 @@ param tags object
 module variables './variables.bicep' = {
   name: 'variables'
   params: {
-    appServiceAppName: appServiceAppName
     environmentType: environmentType
   }
 }
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2023-12-01' = {
-  name: variables.outputs.appServicePlanName
+  name: '${appServiceAppName}-plan'
   location: location
   sku: {
-    name: variables.outputs.appServicePlanSkuName
+    name: environmentType == 'prod' ? 'S1' : 'B1'
   }
   tags: union(variables.outputs.defaultTags, tags)
 }
