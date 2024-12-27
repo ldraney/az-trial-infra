@@ -35,11 +35,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+    - name: Ensure Linter Configuration is Available
+      run: |
+        echo "Contents of bicepconfig.json:"
+        cat ./deploy/bicepconfig.json
     - name: Run Bicep Linter
       run: |
-        echo "Using custom linter configuration..."
-        az bicep build --file env/${{ github.event.inputs.environment }}/main.bicep \
-          --outdir . --bicepconfig-file ./deploy/bicepconfig.json
+        echo "Running Bicep Linter for env/${{ github.event.inputs.environment }}/main.bicep..."
+        az bicep build --file env/${{ github.event.inputs.environment }}/main.bicep
   validate:
     runs-on: ubuntu-latest
     steps:
