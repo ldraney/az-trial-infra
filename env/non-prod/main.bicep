@@ -25,9 +25,10 @@ module appService '../../modules/appService/main.bicep' = {
     location: location
     appServiceAppName: appServiceAppName
     environmentType: environmentType
+    tags: finalTags  // Pass all tags to the module
   }
-  tags: finalTags  // Apply merged tags
 }
 
 output appServiceHostName string = appService.outputs.appServiceAppHostName
+output appServicePlanId string = appService.outputs.appServicePlanId
 
