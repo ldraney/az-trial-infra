@@ -1,0 +1,22 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "value": "centralus"
+    },
+    "appServiceAppName": {
+      "value": "az-trial-app-dev"
+    },
+    "environmentType": {
+      "value": "nonprod"
+    },
+    "customTags": {
+      "value": {
+        "project": "AzureTrial",
+        "team": "DevOps"
+      }
+    }
+  }
+}
+
