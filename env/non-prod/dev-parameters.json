@@ -10,6 +10,13 @@
     },
     "environmentType": {
       "value": "nonprod"
+    },
+    "customTags": {
+      "value": {
+        "project": "AzureTrial",
+        "team": "DevOps",
+        "env": "dev"
+      }
     }
   }
 }
