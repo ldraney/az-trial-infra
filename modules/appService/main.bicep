@@ -1,35 +1,22 @@
 param location string
-param appServiceAppName string
-@allowed(['nonprod', 'prod'])
-param environmentType string
-param tags object
+param appName string
 
-module variables './variables.bicep' = {
-  name: 'variables'
-  params: {
-    environmentType: environmentType
-  }
-}
-
-resource appServicePlan 'Microsoft.Web/serverfarms@2023-12-01' = {
-  name: '${appServiceAppName}-plan'
+resource appServicePlan 'Microsoft.Web/serverfarms@2021-01-01' = {
+  name: '${appName}-plan'
   location: location
   sku: {
-    name: environmentType == 'prod' ? 'S1' : 'B1'
+    name: 'F1'
+    tier: 'Free'
   }
-  tags: union(variables.outputs.defaultTags, tags)
 }
 
-resource appServiceApp 'Microsoft.Web/sites@2023-12-01' = {
-  name: appServiceAppName
+resource appService 'Microsoft.Web/sites@2021-01-01' = {
+  name: appName
   location: location
-  tags: union(variables.outputs.defaultTags, tags)
   properties: {
     serverFarmId: appServicePlan.id
-    httpsOnly: true
   }
 }
 
-output appServiceAppHostName string = appServiceApp.properties.defaultHostName
-output appServicePlanId string = appServicePlan.id
+output appServiceUrl string = appService.defaultHostName
 

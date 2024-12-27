@@ -1,5 +1,4 @@
 name: Deploy Environment
-concurrency: az-trial-infra
 
 on:
   workflow_dispatch:
@@ -7,7 +6,6 @@ on:
       environment:
         description: 'Environment directory (non-prod/prod)'
         required: true
-        default: 'non-prod'
       parameter_file:
         description: 'Parameter file name in the environment directory (e.g., dev-parameters.json)'
         required: true
@@ -17,14 +15,6 @@ on:
       location:
         description: 'Azure location for the deployment (overrides parameter file location if provided)'
         required: false
-        default: ''
-
-permissions:
-  id-token: write
-  contents: read
-
-env:
-  AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
 
 jobs:
   lint:
@@ -39,11 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - uses: azure/login@v1
-      name: Sign in to Azure
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-    - name: Parameter Validation
+    - name: Validate Parameters
       run: |
         az deployment group validate \
           --resource-group ${{ github.event.inputs.resource_group_name }} \
@@ -55,17 +41,10 @@ jobs:
     needs: [lint, validate]
     steps:
     - uses: actions/checkout@v3
-    - uses: azure/login@v1
-      name: Sign in to Azure
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-    - uses: azure/arm-deploy@v1
-      name: Run what-if
-      with:
-        failOnStdErr: false
-        resourceGroupName: ${{ github.event.inputs.resource_group_name }}
-        template: env/${{ github.event.inputs.environment }}/main.bicep
-        parameters: >
-          environmentType=${{ github.event.inputs.environment }}
-        additionalArguments: --what-if
+    - name: Deployment Preview
+      run: |
+        az deployment group what-if \
+          --resource-group ${{ github.event.inputs.resource_group_name }} \
+          --template-file env/${{ github.event.inputs.environment }}/main.bicep \
+          --parameters @env/${{ github.event.inputs.environment }}/${{ github.event.inputs.parameter_file }}
 
