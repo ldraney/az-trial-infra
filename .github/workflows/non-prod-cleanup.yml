@@ -1,0 +1,22 @@
+name: Cleanup Non-Prod Resources
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Runs at midnight UTC
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Delete Non-Prod Resource Groups
+      run: |
+        for rg in $(az group list --query "[?tags.environment=='nonprod'].name" -o tsv); do
+          az group delete --name $rg --yes --no-wait
+        done
+

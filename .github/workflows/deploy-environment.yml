@@ -1,0 +1,41 @@
+name: Deploy Environment
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment directory (non-prod/prod)'
+        required: true
+        default: 'non-prod'
+      parameter_file:
+        description: 'Parameter file name in the environment directory (e.g., dev-parameters.json)'
+        required: true
+      resource_group_name:
+        description: 'Resource group to deploy to'
+        required: true
+      location:
+        description: 'Azure location for the deployment (overrides parameter file location if provided)'
+        required: false
+        default: ''
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Deploy Environment Template
+      run: |
+        az deployment group create \
+          --resource-group ${{ github.event.inputs.resource_group_name }} \
+          --template-file env/${{ github.event.inputs.environment }}/main.bicep \
+          --parameters @env/${{ github.event.inputs.environment }}/${{ github.event.inputs.parameter_file }} \
+          $(if [ -n "${{ github.event.inputs.location }}" ]; then echo "--parameters location=${{ github.event.inputs.location }}"; fi)
+

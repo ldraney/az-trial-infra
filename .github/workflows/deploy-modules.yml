@@ -1,4 +1,4 @@
-name: Deploy Azure Modules
+name: Deploy Storage Account
 
 on:
   workflow_dispatch:
