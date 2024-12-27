@@ -2,11 +2,15 @@
 var appServicePlanName = '${appServiceAppName}-plan'
 
 @description('App Service Plan SKU name')
-var appServicePlanSkuName = environmentType == 'prod' ? 'P2v3' : 'F1'
+var appServicePlanSkuName = environmentType == 'prod' ? 'S1' : 'B1'
 
-@description('Default tags for App Service resources')
+@description('Default tags for resources')
 var defaultTags = {
   owner: 'DevTeam'
   environment: environmentType
 }
+
+output appServicePlanName string = appServicePlanName
+output appServicePlanSkuName string = appServicePlanSkuName
+output defaultTags object = defaultTags
 

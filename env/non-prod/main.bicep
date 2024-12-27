@@ -1,5 +1,5 @@
 @description('Location for resources')
-param location string = 'eastus'
+param location string = 'centralus'  // Default to a supported region
 
 @description('App Service name')
 param appServiceAppName string
@@ -25,10 +25,7 @@ module appService '../../modules/appService/main.bicep' = {
     location: location
     appServiceAppName: appServiceAppName
     environmentType: environmentType
-    tags: finalTags  // Pass all tags to the module
+    tags: finalTags
   }
 }
-
-output appServiceHostName string = appService.outputs.appServiceAppHostName
-output appServicePlanId string = appService.outputs.appServicePlanId
 

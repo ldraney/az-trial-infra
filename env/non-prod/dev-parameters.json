@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "location": {
-      "value": "eastus"
+      "value": "centralus"
     },
     "appServiceAppName": {
       "value": "az-trial-app-dev"
@@ -14,8 +14,7 @@
     "customTags": {
       "value": {
         "project": "AzureTrial",
-        "team": "DevOps",
-        "env": "dev"
+        "team": "DevOps"
       }
     }
   }
