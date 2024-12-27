@@ -10,7 +10,3 @@ var defaultTags = {
   environment: environmentType
 }
 
-output appServicePlanName string = appServicePlanName
-output appServicePlanSkuName string = appServicePlanSkuName
-output defaultTags object = defaultTags
-

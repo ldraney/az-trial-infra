@@ -1,5 +1,5 @@
 @description('Location for resources')
-param location string = 'centralus'  // Default to a supported region
+param location string = 'centralus'
 
 @description('App Service name')
 param appServiceAppName string
@@ -16,7 +16,6 @@ var defaultTags = {
   owner: 'DevTeam'
 }
 
-// Merge default tags with custom tags
 var finalTags = union(defaultTags, customTags)
 
 module appService '../../modules/appService/main.bicep' = {

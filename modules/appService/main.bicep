@@ -2,10 +2,14 @@ param location string
 param appServiceAppName string
 @allowed(['nonprod', 'prod'])
 param environmentType string
-param tags object  // Allow tags to be passed from the parent template
+param tags object
 
 module variables './variables.bicep' = {
   name: 'variables'
+  params: {
+    appServiceAppName: appServiceAppName
+    environmentType: environmentType
+  }
 }
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2023-12-01' = {
@@ -14,13 +18,13 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2023-12-01' = {
   sku: {
     name: variables.outputs.appServicePlanSkuName
   }
-  tags: union(variables.outputs.defaultTags, tags)  // Merge module tags with passed tags
+  tags: union(variables.outputs.defaultTags, tags)
 }
 
 resource appServiceApp 'Microsoft.Web/sites@2023-12-01' = {
   name: appServiceAppName
   location: location
-  tags: union(variables.outputs.defaultTags, tags)  // Merge module tags with passed tags
+  tags: union(variables.outputs.defaultTags, tags)
   properties: {
     serverFarmId: appServicePlan.id
     httpsOnly: true
