@@ -96,11 +96,15 @@ For more instructions on setting up Azure from scratch, go to [ldraney/az-trial-
    - Modify the Bicep files under `modules/` to add new resources.
    - Update workflows to include new modules as needed.
 
+
 ## Future Enhancements
 
 - Add support for additional Azure resources.
 - Implement automated testing for Bicep templates.
 - Configure cost management and monitoring.
+
+## For more information
+Please see the docs/ directory
 
 ## License
 

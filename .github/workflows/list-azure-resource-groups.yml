@@ -1,0 +1,22 @@
+name: List Azure Resource Groups
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  list-resource-groups:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Azure Login
+        uses: ./.github/actions/azure-cli-action
+        with:
+          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: List Resource Groups
+        run: az group list --output table
+

@@ -1,0 +1,22 @@
+name: Validate GitHub Actions Workflows
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - "**"
+
+jobs:
+  validate-workflows:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Validate Workflows Syntax
+        run: |
+          yamllint .github/workflows
+          echo "Workflows are valid!"
+

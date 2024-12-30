@@ -1,0 +1,16 @@
+name: "Azure CLI Login"
+description: "Logs in to Azure using the Azure CLI"
+runs:
+  using: "docker"
+  image: "Dockerfile"
+inputs:
+  azure_credentials:
+    description: "JSON credentials for Azure Login"
+    required: true
+outputs:
+  status:
+    description: "The result of the Azure login command"
+branding:
+  icon: "terminal"
+  color: "blue"
+
